@@ -48,31 +48,7 @@ type TemplateData struct {
 	ShortURL    string
 	Host        string
 	Display     string
-	RecentURLs  []URL
 	CurrentYear int
-}
-
-// getRecentURLs retrieves the 10 most recent URLs from the database
-func getRecentURLs() ([]URL, error) {
-	rows, err := db.Query("SELECT short_code, original_url, created_at FROM urls ORDER BY created_at DESC LIMIT 10")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var urls []URL
-	for rows.Next() {
-		var url URL
-		var createdAt time.Time
-		if err := rows.Scan(&url.ShortCode, &url.OriginalURL, &createdAt); err != nil {
-			return nil, err
-		}
-		url.CreatedAt = createdAt
-		url.FormattedDate = createdAt.Format("Jan 02, 2006 15:04")
-		urls = append(urls, url)
-	}
-
-	return urls, nil
 }
 
 // loadEnvFile loads environment variables from a file
@@ -237,17 +213,9 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// If it's the root path and GET request, show the form
 		if r.URL.Path == "/" && r.Method == "GET" {
-			// Get recent URLs
-			recentURLs, err := getRecentURLs()
-			if err != nil {
-				log.Println("Error getting recent URLs:", err)
-				// Continue anyway, just show empty list
-				recentURLs = []URL{}
-			}
-
+			// No longer need to fetch recent URLs from the database
 			data := TemplateData{
 				Display:     "none",
-				RecentURLs:  recentURLs,
 				Host:        r.Host,
 				CurrentYear: time.Now().Year(),
 			}
@@ -278,9 +246,12 @@ func main() {
 			}
 
 			shortCode := existingShortCode
+			isNew := false
+
 			if shortCode == "" {
 				// Generate a new short code if URL doesn't exist
 				shortCode = generateShortURL()
+				isNew = true
 
 				// Store the URL in the database
 				_, err = db.Exec("INSERT INTO urls (short_code, original_url) VALUES ($1, $2)",
@@ -293,7 +264,9 @@ func main() {
 			}
 
 			// Redirect to prevent form resubmission
-			http.Redirect(w, r, "/?short="+shortCode+"&url="+url.QueryEscape(originalURL), http.StatusSeeOther)
+			redirectURL := fmt.Sprintf("/?short=%s&url=%s&new=%t",
+				shortCode, url.QueryEscape(originalURL), isNew)
+			http.Redirect(w, r, redirectURL, http.StatusSeeOther)
 			return
 		}
 
@@ -302,21 +275,13 @@ func main() {
 			shortCode := r.URL.Query().Get("short")
 			originalURL := r.URL.Query().Get("url")
 
-			// Get recent URLs
-			recentURLs, err := getRecentURLs()
-			if err != nil {
-				log.Println("Error getting recent URLs:", err)
-				// Continue anyway, just show empty list
-				recentURLs = []URL{}
-			}
-
+			// No longer need to fetch recent URLs from the database
 			// Render the template with the result
 			data := TemplateData{
 				OriginalURL: originalURL,
 				ShortURL:    "/" + shortCode,
 				Host:        r.Host,
 				Display:     "block",
-				RecentURLs:  recentURLs,
 				CurrentYear: time.Now().Year(),
 			}
 			tmpl.Execute(w, data)

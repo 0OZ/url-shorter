@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>URL Shortener</title>
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@400;500;600&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         :root {
-            --primary: #0071e3;
-            --primary-light: #409cff;
-            --primary-hover: #0051a2;
+            --primary: #5E42D7;
+            --primary-light: #7F68E8;
+            --primary-hover: #4A32BE;
             --secondary: #f5f5f7;
             --text: #1d1d1f;
             --text-light: #86868b;
@@ -21,6 +21,7 @@
             --border: #d2d2d7;
             --success: #34c759;
             --radius: 12px;
+            --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
         }
 
         * {
@@ -30,46 +31,150 @@
         }
 
         body {
-            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--font-primary);
             background-color: var(--background);
             color: var(--text);
             line-height: 1.47059;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            max-width: 980px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         .container {
-            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            position: relative;
+            padding: 7rem 0 5rem;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(94, 66, 215, 0.05) 0%, rgba(94, 66, 215, 0) 100%);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -25%;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(94, 66, 215, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: 0;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background-color: rgba(94, 66, 215, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .hero-tag:hover {
+            background-color: rgba(94, 66, 215, 0.15);
+            transform: translateY(-2px);
         }
 
         h1 {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 3rem;
-            font-weight: 600;
-            letter-spacing: -0.015em;
-            margin-bottom: 0.5rem;
+            font-family: var(--font-primary);
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
             color: var(--text);
-            text-align: center;
+            line-height: 1.1;
+        }
+
+        h1 span {
+            display: block;
         }
 
         .subtitle {
-            text-align: center;
             color: var(--text-light);
-            margin-bottom: 3rem;
-            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            font-size: 1.5rem;
             font-weight: 400;
+            max-width: 600px;
+        }
+
+        .hero-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            padding: 1rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(94, 66, 215, 0.3);
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .hero-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(94, 66, 215, 0.4);
+        }
+
+        .trust-badge {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .hero-media {
+            position: absolute;
+            top: 50%;
+            right: -10%;
+            transform: translateY(-50%);
+            width: 60%;
+            opacity: 0.8;
+            z-index: 0;
         }
 
         .card {
             background-color: var(--card);
             border-radius: var(--radius);
             padding: 2.5rem;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             margin-bottom: 3rem;
             border: 1px solid rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 30%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(94, 66, 215, 0.05) 100%);
+            z-index: 0;
         }
 
         .form-group {
@@ -77,17 +182,19 @@
             gap: 0.75rem;
             margin-bottom: 1.5rem;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         input[type=url] {
             flex: 1;
-            padding: 0.875rem 1.25rem;
+            padding: 1rem 1.5rem;
             border: 1px solid var(--border);
             border-radius: var(--radius);
             font-size: 1.05rem;
             font-family: inherit;
             outline: none;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             color: var(--text);
             background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -95,7 +202,7 @@
 
         input[type=url]:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+            box-shadow: 0 0 0 4px rgba(94, 66, 215, 0.15);
         }
 
         input[type=url]::placeholder {
@@ -108,10 +215,10 @@
             color: white;
             border: none;
             border-radius: var(--radius);
-            padding: 0.875rem 1.75rem;
-            font-weight: 500;
+            padding: 1rem 1.75rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             font-size: 1.05rem;
             display: flex;
             align-items: center;
@@ -121,8 +228,8 @@
 
         button:hover {
             background-color: var(--primary-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(94, 66, 215, 0.2);
         }
 
         button:active {
@@ -136,6 +243,8 @@
             border-radius: var(--radius);
             border: 1px solid rgba(0, 0, 0, 0.05);
             animation: fadeIn 0.5s ease-out;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes fadeIn {
@@ -150,32 +259,57 @@
             }
         }
 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
         .result p {
             margin-bottom: 0.75rem;
             font-size: 1rem;
         }
 
         .result strong {
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .short-url {
             color: var(--primary);
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
             display: inline-block;
             padding: 0.75rem 1.25rem;
-            background-color: rgba(0, 113, 227, 0.08);
+            background-color: rgba(94, 66, 215, 0.08);
             border-radius: var(--radius);
             margin-top: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .short-url:hover {
-            background-color: rgba(0, 113, 227, 0.15);
+            background-color: rgba(94, 66, 215, 0.15);
+            transform: translateY(-2px);
         }
 
         .copy-btn {
@@ -186,11 +320,75 @@
             padding: 0.5rem;
             margin-left: 0.5rem;
             border-radius: var(--radius);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .copy-btn:hover {
-            background-color: rgba(0, 113, 227, 0.1);
+            background-color: rgba(94, 66, 215, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stats-section {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background-color: rgba(94, 66, 215, 0.02);
+            margin-bottom: 3rem;
+        }
+
+        .stats-inner {
+            text-align: center;
+        }
+
+        .stats-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            display: none;
+        }
+
+        .stats-logos {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin-top: 1.5rem;
+        }
+
+        .stats-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: scaleIn 0.5s ease forwards;
+        }
+
+        .stats-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stats-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stats-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: var(--font-primary);
+        }
+
+        .stats-label {
+            font-size: 1rem;
+            color: var(--text-light);
         }
 
         .urls-list {
@@ -198,7 +396,7 @@
         }
 
         .urls-list h2 {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--font-primary);
             font-size: 1.75rem;
             margin-bottom: 1.5rem;
             color: var(--text);
@@ -214,7 +412,7 @@
             border-spacing: 0;
             border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
         }
 
@@ -230,7 +428,7 @@
         }
 
         th {
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text);
             font-size: 0.9rem;
             text-transform: uppercase;
@@ -246,8 +444,14 @@
             border-bottom: none;
         }
 
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
         tbody tr:hover {
-            background-color: rgba(0, 0, 0, 0.01);
+            background-color: rgba(94, 66, 215, 0.03);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
         }
 
         .table-link {
@@ -256,7 +460,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: color 0.2s ease;
+            transition: color 0.3s ease;
         }
 
         .table-link:hover {
@@ -276,7 +480,7 @@
             color: var(--text-light);
             font-size: 0.9rem;
             border-top: 1px solid var(--border);
-            padding-top: 2rem;
+            padding: 2rem 0;
         }
 
         .icon-circle {
@@ -286,7 +490,7 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background-color: rgba(0, 113, 227, 0.1);
+            background-color: rgba(94, 66, 215, 0.1);
             color: var(--primary);
             margin-right: 0.75rem;
         }
@@ -321,12 +525,16 @@
 
         /* Responsive styles */
         @media (max-width: 768px) {
-            body {
-                padding: 2rem 1rem;
+            .hero {
+                padding: 4rem 0 3rem;
             }
 
             h1 {
                 font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
             }
 
             .card {
@@ -350,13 +558,22 @@
             .truncate {
                 max-width: 180px;
             }
+
+            .stats-logos {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .hero-media {
+                display: none;
+            }
         }
 
         /* Dark mode support */
         @media (prefers-color-scheme: dark) {
             :root {
-                --primary: #409cff;
-                --primary-hover: #0071e3;
+                --primary: #7F68E8;
+                --primary-hover: #5E42D7;
                 --secondary: #1c1c1e;
                 --text: #f5f5f7;
                 --text-light: #aeaeb2;
@@ -372,20 +589,187 @@
             input[type=url] {
                 background-color: rgba(30, 30, 32, 0.8);
             }
+
+            .stats-section {
+                background-color: rgba(127, 104, 232, 0.05);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .recent-link {
+            animation: slideIn 0.3s ease-out forwards;
+            opacity: 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--secondary);
+            border-radius: var(--radius);
+            color: var(--text-light);
+            font-size: 1.1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            animation: fadeInScale 0.4s ease-out forwards;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            opacity: 0.4;
+        }
+
+        .url-table {
+            animation: fadeInScale 0.4s ease-out forwards;
+        }
+
+        /* Clear button for localStorage */
+        .clear-history {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            margin-left: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-history:hover {
+            background-color: rgba(94, 66, 215, 0.08);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .title-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Tooltip style */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            pointer-events: none;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>URL Shortener</h1>
-        <p class="subtitle">Share links elegantly. Simply.</p>
+    <div class="hero">
+        <div class="container">
+            <div class="hero-inner">
+                <div class="hero-tag">
+                    <span><b>Simple:</b> One click URL shortening</span>
+                </div>
+                <h1>Share links <span>elegantly</span></h1>
+                <p class="subtitle">Create short, memorable links that are easy to share and track with our powerful URL
+                    shortener.</p>
 
-        <div class="card">
-            <form method="POST" action="/">
+                <a href="#shorten-card" class="hero-button">
+                    <span>Shorten URL Now</span>
+                </a>
+                <p class="trust-badge"><i class="fas fa-shield-alt"></i> Trusted by thousands of users worldwide</p>
+            </div>
+        </div>
+        <div class="hero-media">
+            <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.2">
+                <path
+                    d="M480.8 168.7C524.5 210.6 543.4 285.2 528.9 353.7 514.5 422.2 466.7 484.5 409.7 502.2 352.6 519.8 286.4 492.8 237.5 458.3 188.6 423.8 157 381.8 142.2 331.7 127.4 281.7 129.2 223.5 158.3 184.9 187.4 146.2 243.7 127.1 306.1 122.2 368.5 117.3 437.1 126.7 480.8 168.7Z"
+                    fill="#5E42D7" opacity="0.25" />
+                <path
+                    d="M380.6 151.8C411.4 182.2 408.3 242.1 408 303.9 407.7 365.7 410.1 429.5 380.9 472.6 351.6 515.6 290.7 538 235.8 530.5 180.9 523 131.9 485.6 110.7 439.2 89.5 392.8 96 337.4 110.6 283.8 125.2 230.2 147.8 178.4 187.6 148.4 227.4 118.3 284.4 110 328.2 119.7 372 129.3 349.8 121.4 380.6 151.8Z"
+                    fill="#5E42D7" opacity="0.25" />
+                <path
+                    d="M148.8 225.2C168.1 157.5 226.5 100.8 301.8 66.7 377.1 32.7 469.3 21.4 548.9 59.8 628.5 98.1 695.5 186.2 711.9 284.9 728.3 383.5 694 492.8 614.8 535.8 535.7 578.7 411.7 555.4 308.7 528.6 205.7 501.9 123.7 471.7 88.2 407.7 52.7 343.7 64 245.8 83.3 178.1 102.6 110.3 129.4 292.9 148.8 225.2Z"
+                    fill="#5E42D7" opacity="0.15" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="stats-section">
+        <div class="container">
+            <div class="stats-inner">
+                <div class="stats-logos">
+                    <div class="stats-item">
+                        <div class="stats-number">500K+</div>
+                        <div class="stats-label">URLs Shortened</div>
+                    </div>
+                    <div class="stats-item">
+                        <div class="stats-number">10K+</div>
+                        <div class="stats-label">Daily Clicks</div>
+                    </div>
+                    <div class="stats-item">
+                        <div class="stats-number">99.9%</div>
+                        <div class="stats-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card" id="shorten-card">
+            <form id="shortenForm" method="POST" action="/">
                 <div class="form-group">
-                    <input type="url" name="url" placeholder="Enter your URL to shorten" required>
-                    <button type="submit"><i class="fas fa-link"></i> Shorten URL</button>
+                    <input type="url" name="url" id="urlInput" placeholder="Enter your URL to shorten"
+                        required="required" />
+                    <button type="submit" id="submitBtn"><i class="fas fa-link"></i> Shorten URL</button>
                 </div>
             </form>
 
@@ -394,16 +778,17 @@
                     <div class="success-checkmark">
                         <i class="fas fa-check"></i>
                     </div>
-                    <span style="font-weight: 500;">URL shortened successfully</span>
+                    <span id="resultMessage" style="font-weight: 500;">URL shortened successfully</span>
                 </div>
-                <p><strong><i class="fas fa-globe"></i> Original URL:</strong> <span
-                        class="truncate">{{.OriginalURL}}</span></p>
+                <p><strong><i class="fas fa-globe"></i> Original URL:</strong> <span class="truncate"
+                        id="originalUrlDisplay">{{.OriginalURL}}</span></p>
                 <p><strong><i class="fas fa-link"></i> Your shortened URL:</strong></p>
                 <div style="display: flex; align-items: center;">
-                    <a href="{{.ShortURL}}" target="_blank" class="short-url">
-                        <i class="fas fa-external-link-alt"></i> {{.Host}}{{.ShortURL}}
+                    <a href="{{.ShortURL}}" target="_blank" class="short-url" id="shortUrlLink">
+                        <i class="fas fa-external-link-alt"></i> <span
+                            id="shortUrlDisplay">{{.Host}}{{.ShortURL}}</span>
                     </a>
-                    <button class="copy-btn" onclick="copyToClipboard('{{.Host}}{{.ShortURL}}')">
+                    <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()">
                         <i class="fas fa-copy"></i>
                     </button>
                 </div>
@@ -411,29 +796,13 @@
         </div>
 
         <div class="urls-list">
-            <h2><i class="fas fa-history"></i> Recent Links</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Short URL</th>
-                        <th>Original URL</th>
-                        <th>Created</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{range .RecentURLs}}
-                    <tr>
-                        <td>
-                            <a href="/{{.ShortCode}}" target="_blank" class="table-link">
-                                <i class="fas fa-link"></i> {{$.Host}}/{{.ShortCode}}
-                            </a>
-                        </td>
-                        <td class="truncate">{{.OriginalURL}}</td>
-                        <td><i class="far fa-clock"></i> {{.FormattedDate}}</td>
-                    </tr>
-                    {{end}}
-                </tbody>
-            </table>
+            <div class="title-actions">
+                <h2><i class="fas fa-history"></i> Recent Links</h2>
+                <button class="clear-history tooltip" id="clearHistoryBtn" data-tooltip="Clear all recent links">
+                    <i class="fas fa-trash-alt"></i> Clear History
+                </button>
+            </div>
+            <div id="urlsContainer"></div>
         </div>
 
         <div class="footer">
@@ -441,47 +810,234 @@
         </div>
     </div>
 
-    <script>
+    <script type="text/javascript">
         // Check if we should show the result box
         document.addEventListener('DOMContentLoaded', function () {
-            if ("{{.Display}}" === "block") {
+            // Handle URL parameters (for the redirect after POST)
+            const urlParams = new URLSearchParams(window.location.search);
+            const shortCode = urlParams.get('short');
+            const originalUrl = urlParams.get('url');
+            const isNew = urlParams.get('new');
+
+            // Display recent URLs from localStorage
+            displayRecentUrls();
+
+            // Setup clear history button
+            document.getElementById('clearHistoryBtn').addEventListener('click', function () {
+                clearRecentUrls();
+            });
+
+            if (shortCode) {
+                // Clean the URL without reloading
+                window.history.replaceState({}, document.title, '/');
+
+                // Display the result
                 document.getElementById('resultBox').style.display = "block";
+                document.getElementById('originalUrlDisplay').textContent = originalUrl || "{{.OriginalURL}}";
+
+                const shortUrl = window.location.host + '/' + shortCode;
+                document.getElementById('shortUrlDisplay').textContent = shortUrl;
+                document.getElementById('shortUrlLink').href = '/' + shortCode;
+
+                // Show different message based on whether URL is new or existing
+                if (isNew === 'true') {
+                    document.getElementById('resultMessage').textContent = 'URL shortened successfully';
+
+                    // Save to localStorage when a new URL is created
+                    if (shortCode && originalUrl) {
+                        saveToLocalStorage(shortCode, originalUrl);
+                    }
+                } else {
+                    document.getElementById('resultMessage').textContent = 'Using existing shortened URL';
+                }
+
+                // Scroll to the result
+                document.getElementById('shorten-card').scrollIntoView({ behavior: 'smooth' });
             }
+
+            // Handle template variable for result display
+            const resultBox = document.getElementById('resultBox');
+            if (resultBox.style.display === "{{.Display}}") {
+                resultBox.style.display = "{{.Display}}" === "block" ? "block" : "none";
+            }
+
+            // Set up form submission to prevent double submission
+            document.getElementById('shortenForm').addEventListener('submit', function (e) {
+                // Disable the button after submission to prevent double clicking
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                // Form will be submitted normally with POST redirect pattern
+                // The server handles the redirect to prevent resubmission
+            });
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
         });
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function () {
-                // Create and show a toast notification
-                const toast = document.createElement('div');
-                toast.style.position = 'fixed';
-                toast.style.bottom = '20px';
-                toast.style.left = '50%';
-                toast.style.transform = 'translateX(-50%)';
-                toast.style.padding = '12px 24px';
-                toast.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-                toast.style.color = 'white';
-                toast.style.borderRadius = '8px';
-                toast.style.fontSize = '14px';
-                toast.style.fontWeight = '500';
-                toast.style.zIndex = '1000';
-                toast.style.display = 'flex';
-                toast.style.alignItems = 'center';
-                toast.style.gap = '8px';
-                toast.style.backdropFilter = 'blur(5px)';
-                toast.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Copied to clipboard';
+        // Save URL to localStorage
+        function saveToLocalStorage(shortCode, originalUrl) {
+            // Get existing URLs or initialize empty array
+            let recentUrls = JSON.parse(localStorage.getItem('recentUrls') || '[]');
 
-                document.body.appendChild(toast);
+            // Add the new URL at the beginning
+            recentUrls.unshift({
+                shortCode: shortCode,
+                originalUrl: originalUrl,
+                createdAt: new Date().toISOString()
+            });
 
-                // Remove the toast after 2 seconds
+            // Keep only the 10 most recent URLs
+            if (recentUrls.length > 10) {
+                recentUrls = recentUrls.slice(0, 10);
+            }
+
+            // Save back to localStorage
+            localStorage.setItem('recentUrls', JSON.stringify(recentUrls));
+
+            // Update the displayed list
+            displayRecentUrls();
+        }
+
+        // Clear all recent URLs
+        function clearRecentUrls() {
+            // Show confirmation dialog
+            const confirmed = confirm("Are you sure you want to clear all your recent links?");
+            if (confirmed) {
+                localStorage.removeItem('recentUrls');
+                displayRecentUrls();
+
+                // Show toast notification
+                showToast("History cleared successfully");
+            }
+        }
+
+        // Show a toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.padding = '12px 24px';
+            toast.style.backgroundColor = type === 'success' ? 'rgba(52, 199, 89, 0.9)' : 'rgba(0, 0, 0, 0.8)';
+            toast.style.color = 'white';
+            toast.style.borderRadius = '8px';
+            toast.style.fontSize = '14px';
+            toast.style.fontWeight = '500';
+            toast.style.zIndex = '1000';
+            toast.style.display = 'flex';
+            toast.style.alignItems = 'center';
+            toast.style.gap = '8px';
+            toast.style.backdropFilter = 'blur(5px)';
+
+            const icon = type === 'success'
+                ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+                : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+
+            toast.innerHTML = icon + message;
+            document.body.appendChild(toast);
+
+            // Remove the toast after 2 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
                 setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.transition = 'opacity 0.3s ease';
-                    setTimeout(() => {
-                        document.body.removeChild(toast);
-                    }, 300);
-                }, 2000);
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 2000);
+        }
+
+        // Display URLs from localStorage
+        function displayRecentUrls() {
+            const recentUrls = JSON.parse(localStorage.getItem('recentUrls') || '[]');
+            const container = document.getElementById('urlsContainer');
+
+            if (!container) return;
+
+            // Clear existing content
+            container.innerHTML = '';
+
+            if (recentUrls.length === 0) {
+                // Show empty state with animation
+                const emptyState = document.createElement('div');
+                emptyState.className = 'empty-state';
+                emptyState.innerHTML = `
+                    <div class="empty-icon"><i class="fas fa-link-slash"></i></div>
+                    <p>You haven't created any short links yet</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Your recent links will appear here after you create them</p>
+                `;
+                container.appendChild(emptyState);
+                return;
+            }
+
+            // Create table with animation
+            const table = document.createElement('table');
+            table.className = 'url-table';
+
+            // Add thead
+            const thead = document.createElement('thead');
+            thead.innerHTML = `
+                <tr>
+                    <th>Short URL</th>
+                    <th>Original URL</th>
+                    <th>Created</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            // Add tbody
+            const tbody = document.createElement('tbody');
+
+            // Add each URL to the table with staggered animation
+            recentUrls.forEach((url, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'recent-link';
+                tr.style.animationDelay = `${index * 0.08}s`;
+
+                // Format the date
+                const date = new Date(url.createdAt);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                tr.innerHTML = `
+                    <td>
+                        <a href="/${url.shortCode}" target="_blank" class="table-link">
+                            <i class="fas fa-link"></i> ${window.location.host}/${url.shortCode}
+                        </a>
+                    </td>
+                    <td class="truncate">${url.originalUrl}</td>
+                    <td><i class="far fa-clock"></i> ${formattedDate}</td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+
+            table.appendChild(tbody);
+            container.appendChild(table);
+        }
+
+        function copyToClipboard() {
+            const shortUrl = document.getElementById('shortUrlDisplay').textContent;
+            navigator.clipboard.writeText(shortUrl).then(function () {
+                // Use the showToast function instead
+                showToast("Copied to clipboard");
             }, function (err) {
                 console.error('Could not copy text: ', err);
+                showToast("Failed to copy to clipboard", "error");
             });
         }
     </script>
