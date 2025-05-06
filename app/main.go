@@ -8,6 +8,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -179,16 +180,39 @@ func getEnv(key, defaultValue string) string {
 	return value
 }
 
+// getShortCodeForURL checks if a URL already exists and returns its short code
+func getShortCodeForURL(url string) (string, error) {
+	var shortCode string
+	err := db.QueryRow("SELECT short_code FROM urls WHERE original_url = $1", url).Scan(&shortCode)
+	if err == sql.ErrNoRows {
+		return "", nil // URL doesn't exist
+	}
+	return shortCode, err
+}
+
 func main() {
 	// Load local environment variables if available
 	workingDir, err := os.Getwd()
 	if err == nil {
-		// Try to load from project root .env.local
+		// Check if running in Docker by looking for /.dockerenv file
+		_, dockerErr := os.Stat("/.dockerenv")
+		isDocker := !os.IsNotExist(dockerErr)
+
 		rootDir := filepath.Dir(workingDir)
-		if filepath.Base(workingDir) == "app" {
-			loadEnvFile(filepath.Join(rootDir, ".env.local"))
+		if isDocker {
+			// Use .env file in Docker environment
+			if filepath.Base(workingDir) == "app" {
+				loadEnvFile(filepath.Join(rootDir, ".env"))
+			} else {
+				loadEnvFile(filepath.Join(workingDir, ".env"))
+			}
 		} else {
-			loadEnvFile(filepath.Join(workingDir, ".env.local"))
+			// Use .env.local in non-Docker environment
+			if filepath.Base(workingDir) == "app" {
+				loadEnvFile(filepath.Join(rootDir, ".env.local"))
+			} else {
+				loadEnvFile(filepath.Join(workingDir, ".env.local"))
+			}
 		}
 	}
 
@@ -245,23 +269,44 @@ func main() {
 				return
 			}
 
-			// Generate a short code
-			shortCode := generateShortURL()
-
-			// Store the URL in the database
-			_, err = db.Exec("INSERT INTO urls (short_code, original_url) VALUES ($1, $2)",
-				shortCode, originalURL)
+			// Check if URL already exists
+			existingShortCode, err := getShortCodeForURL(originalURL)
 			if err != nil {
-				log.Println("Error inserting URL into database:", err)
+				log.Println("Error checking for existing URL:", err)
 				http.Error(w, "Error shortening URL", http.StatusInternalServerError)
 				return
 			}
 
-			// Get recent URLs for display
+			shortCode := existingShortCode
+			if shortCode == "" {
+				// Generate a new short code if URL doesn't exist
+				shortCode = generateShortURL()
+
+				// Store the URL in the database
+				_, err = db.Exec("INSERT INTO urls (short_code, original_url) VALUES ($1, $2)",
+					shortCode, originalURL)
+				if err != nil {
+					log.Println("Error inserting URL into database:", err)
+					http.Error(w, "Error shortening URL", http.StatusInternalServerError)
+					return
+				}
+			}
+
+			// Redirect to prevent form resubmission
+			http.Redirect(w, r, "/?short="+shortCode+"&url="+url.QueryEscape(originalURL), http.StatusSeeOther)
+			return
+		}
+
+		// Handle GET request with short code parameter (after redirect)
+		if r.URL.Path == "/" && r.Method == "GET" && r.URL.Query().Get("short") != "" {
+			shortCode := r.URL.Query().Get("short")
+			originalURL := r.URL.Query().Get("url")
+
+			// Get recent URLs
 			recentURLs, err := getRecentURLs()
 			if err != nil {
 				log.Println("Error getting recent URLs:", err)
-				// Continue anyway
+				// Continue anyway, just show empty list
 				recentURLs = []URL{}
 			}
 
