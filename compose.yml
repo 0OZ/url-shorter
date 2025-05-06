@@ -1,0 +1,35 @@
+services:
+  url-shortener:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:6781:8080"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=urlshortener
+    restart: always
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "127.0.0.1:5081:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=urlshortener
+    volumes:
+      - ./.postgres_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - shared_ng
+
+networks:
+  shared_ng:
+    name: shared_ng
+

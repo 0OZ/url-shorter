@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #f3f4f6;
+            --text: #111827;
+            --text-light: #6b7280;
+            --background: #ffffff;
+            --card: #f9fafb;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        input[type=url] {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input[type=url]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .result {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background-color: var(--secondary);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--success);
+
+            display: {
+                    {
+                    .Display
+                }
+            }
+
+            ;
+        }
+
+        .result p {
+            margin-bottom: 0.5rem;
+        }
+
+        .result strong {
+            font-weight: 600;
+        }
+
+        .short-url {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: rgba(79, 70, 229, 0.1);
+            border-radius: var(--radius);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .short-url:hover {
+            text-decoration: underline;
+        }
+
+        .copy-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0.25rem;
+            margin-left: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+
+        .urls-list {
+            margin-top: 2rem;
+        }
+
+        .urls-list h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: #f3f4f6;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        td {
+            color: var(--text-light);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-link {
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .table-link:hover {
+            text-decoration: underline;
+        }
+
+        .truncate {
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .form-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            th,
+            td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .truncate {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+        <p class="subtitle">Simplify your links in seconds</p>
+
+        <div class="card">
+            <form method="POST" action="/">
+                <div class="form-group">
+                    <input type="url" name="url" placeholder="Enter a long URL" required>
+                    <button type="submit"><i class="fas fa-link"></i> Shorten</button>
+                </div>
+            </form>
+
+            <div class="result" style="display: {{.Display}}">
+                <p><strong><i class="fas fa-globe"></i> Original URL:</strong> <span
+                        class="truncate">{{.OriginalURL}}</span></p>
+                <p><strong><i class="fas fa-link"></i> Your shortened URL:</strong></p>
+                <div style="display: flex; align-items: center;">
+                    <a href="{{.ShortURL}}" target="_blank" class="short-url">
+                        <i class="fas fa-external-link-alt"></i> {{.Host}}{{.ShortURL}}
+                    </a>
+                    <button class="copy-btn" onclick="copyToClipboard('{{.Host}}{{.ShortURL}}')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="urls-list">
+            <h2><i class="fas fa-history"></i> Recent Links</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Short URL</th>
+                        <th>Original URL</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .RecentURLs}}
+                    <tr>
+                        <td>
+                            <a href="/{{.ShortCode}}" target="_blank" class="table-link">
+                                <i class="fas fa-link"></i> {{$.Host}}/{{.ShortCode}}
+                            </a>
+                        </td>
+                        <td class="truncate">{{.OriginalURL}}</td>
+                        <td><i class="far fa-clock"></i> {{.FormattedDate}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>© {{.CurrentYear}} URL Shortener. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function () {
+                alert('URL copied to clipboard!');
+            }, function (err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    </script>
+</body>
+
+</html>
