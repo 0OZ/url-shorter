@@ -1,7 +1,7 @@
-// main.go - URL shortener in Go with PostgreSQL
 package main
 
 import (
+	"bufio"
 	"database/sql"
 	"fmt"
 	"html/template"
@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	_ "github.com/lib/pq" // PostgreSQL driver
@@ -73,6 +74,51 @@ func getRecentURLs() ([]URL, error) {
 	return urls, nil
 }
 
+// loadEnvFile loads environment variables from a file
+func loadEnvFile(filePath string) {
+	log.Printf("Trying to load environment variables from: %s", filePath)
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		log.Printf("File %s does not exist, skipping", filePath)
+		return
+	}
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		log.Printf("Error opening %s: %v", filePath, err)
+		return
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		// Skip comments and empty lines
+		if strings.HasPrefix(line, "#") || strings.TrimSpace(line) == "" {
+			continue
+		}
+
+		parts := strings.SplitN(line, "=", 2)
+		if len(parts) != 2 {
+			continue
+		}
+
+		key := strings.TrimSpace(parts[0])
+		value := strings.TrimSpace(parts[1])
+
+		// Only set if not already set
+		if os.Getenv(key) == "" {
+			os.Setenv(key, value)
+			log.Printf("Set environment variable: %s", key)
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Printf("Error reading %s: %v", filePath, err)
+	}
+
+	log.Printf("Environment variables loaded from %s", filePath)
+}
+
 // Initialize database connection and create the table if needed
 func initDB() *sql.DB {
 	// Get connection details from environment variables or use defaults
@@ -85,6 +131,8 @@ func initDB() *sql.DB {
 	// Build connection string
 	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
+
+	log.Printf("Connecting to database: %s:%s/%s", host, port, dbname)
 
 	// Connect to database
 	var err error
@@ -132,12 +180,30 @@ func getEnv(key, defaultValue string) string {
 }
 
 func main() {
+	// Load local environment variables if available
+	workingDir, err := os.Getwd()
+	if err == nil {
+		// Try to load from project root .env.local
+		rootDir := filepath.Dir(workingDir)
+		if filepath.Base(workingDir) == "app" {
+			loadEnvFile(filepath.Join(rootDir, ".env.local"))
+		} else {
+			loadEnvFile(filepath.Join(workingDir, ".env.local"))
+		}
+	}
+
 	// Initialize database
 	db = initDB()
 	defer db.Close()
 
 	// Initialize template
-	tmplPath := filepath.Join("app", "templates", "home.html")
+	var tmplPath string
+	if filepath.Base(workingDir) == "app" {
+		tmplPath = filepath.Join("templates", "home.html")
+	} else {
+		tmplPath = filepath.Join("app", "templates", "home.html")
+	}
+
 	tmpl, err := template.ParseFiles(tmplPath)
 	if err != nil {
 		log.Fatal("Error parsing template:", err)

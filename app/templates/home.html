@@ -5,20 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Shortener</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --secondary: #f3f4f6;
-            --text: #111827;
-            --text-light: #6b7280;
+            --primary: #0071e3;
+            --primary-light: #409cff;
+            --primary-hover: #0051a2;
+            --secondary: #f5f5f7;
+            --text: #1d1d1f;
+            --text-light: #86868b;
             --background: #ffffff;
-            --card: #f9fafb;
-            --border: #e5e7eb;
-            --success: #10b981;
-            --radius: 8px;
+            --card: #fbfbfd;
+            --border: #d2d2d7;
+            --success: #34c759;
+            --radius: 12px;
         }
 
         * {
@@ -28,13 +30,15 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--background);
             color: var(--text);
-            line-height: 1.6;
-            max-width: 800px;
+            line-height: 1.47059;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            max-width: 980px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 3rem 2rem;
         }
 
         .container {
@@ -42,49 +46,61 @@
         }
 
         h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary), #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 3rem;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            margin-bottom: 0.5rem;
+            color: var(--text);
             text-align: center;
         }
 
         .subtitle {
             text-align: center;
             color: var(--text-light);
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+            font-weight: 400;
         }
 
         .card {
             background-color: var(--card);
             border-radius: var(--radius);
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
+            padding: 2.5rem;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            margin-bottom: 3rem;
+            border: 1px solid rgba(0, 0, 0, 0.03);
         }
 
         .form-group {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
         }
 
         input[type=url] {
             flex: 1;
-            padding: 0.75rem 1rem;
+            padding: 0.875rem 1.25rem;
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-family: inherit;
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: all 0.2s ease;
+            color: var(--text);
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
         }
 
         input[type=url]:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+        }
+
+        input[type=url]::placeholder {
+            color: var(--text-light);
+            opacity: 0.7;
         }
 
         button {
@@ -92,60 +108,74 @@
             color: white;
             border: none;
             border-radius: var(--radius);
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
+            padding: 0.875rem 1.75rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s;
-            font-size: 1rem;
+            transition: all 0.2s ease;
+            font-size: 1.05rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
         }
 
         button:hover {
             background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         .result {
-            margin-top: 1rem;
-            padding: 1.5rem;
+            margin-top: 2rem;
+            padding: 1.75rem;
             background-color: var(--secondary);
             border-radius: var(--radius);
-            border-left: 4px solid var(--success);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.5s ease-out;
+        }
 
-            display: {
-                    {
-                    .Display
-                }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
             }
 
-            ;
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .result p {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
         }
 
         .result strong {
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .short-url {
             color: var(--primary);
-            font-weight: 600;
+            font-weight: 500;
             text-decoration: none;
             display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: rgba(79, 70, 229, 0.1);
+            padding: 0.75rem 1.25rem;
+            background-color: rgba(0, 113, 227, 0.08);
             border-radius: var(--radius);
-            margin-top: 0.5rem;
+            margin-top: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: all 0.2s ease;
         }
 
         .short-url:hover {
-            text-decoration: underline;
+            background-color: rgba(0, 113, 227, 0.15);
         }
 
         .copy-btn {
@@ -153,22 +183,24 @@
             border: none;
             color: var(--primary);
             cursor: pointer;
-            padding: 0.25rem;
+            padding: 0.5rem;
             margin-left: 0.5rem;
-            border-radius: 4px;
+            border-radius: var(--radius);
+            transition: all 0.2s ease;
         }
 
         .copy-btn:hover {
-            background-color: rgba(79, 70, 229, 0.1);
+            background-color: rgba(0, 113, 227, 0.1);
         }
 
         .urls-list {
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
 
         .urls-list h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
             color: var(--text);
             font-weight: 600;
             display: flex;
@@ -178,18 +210,21 @@
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             border-radius: var(--radius);
             overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border);
         }
 
         thead {
-            background-color: #f3f4f6;
+            background-color: var(--secondary);
         }
 
         th,
         td {
-            padding: 1rem;
+            padding: 1.25rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
         }
@@ -197,14 +232,22 @@
         th {
             font-weight: 500;
             color: var(--text);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         td {
-            color: var(--text-light);
+            color: var(--text);
+            font-size: 1rem;
         }
 
         tr:last-child td {
             border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.01);
         }
 
         .table-link {
@@ -213,10 +256,11 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: color 0.2s ease;
         }
 
         .table-link:hover {
-            text-decoration: underline;
+            color: var(--primary-hover);
         }
 
         .truncate {
@@ -227,10 +271,12 @@
         }
 
         .footer {
-            margin-top: 2rem;
+            margin-top: 4rem;
             text-align: center;
             color: var(--text-light);
-            font-size: 0.875rem;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
         }
 
         .icon-circle {
@@ -240,15 +286,51 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background-color: rgba(79, 70, 229, 0.1);
+            background-color: rgba(0, 113, 227, 0.1);
             color: var(--primary);
+            margin-right: 0.75rem;
+        }
+
+        /* Success animation */
+        .success-checkmark {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background-color: var(--success);
+            border-radius: 50%;
+            color: white;
             margin-right: 0.5rem;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: popIn 0.3s ease 0.2s forwards;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         /* Responsive styles */
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             body {
-                padding: 1rem;
+                padding: 2rem 1rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .card {
+                padding: 1.5rem;
             }
 
             .form-group {
@@ -257,15 +339,38 @@
 
             button {
                 width: 100%;
+                justify-content: center;
             }
 
             th,
             td {
-                padding: 0.75rem 0.5rem;
+                padding: 1rem 0.75rem;
             }
 
             .truncate {
-                max-width: 150px;
+                max-width: 180px;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #409cff;
+                --primary-hover: #0071e3;
+                --secondary: #1c1c1e;
+                --text: #f5f5f7;
+                --text-light: #aeaeb2;
+                --background: #000000;
+                --card: #1c1c1e;
+                --border: #38383a;
+            }
+
+            table {
+                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            }
+
+            input[type=url] {
+                background-color: rgba(30, 30, 32, 0.8);
             }
         }
     </style>
@@ -274,17 +379,23 @@
 <body>
     <div class="container">
         <h1>URL Shortener</h1>
-        <p class="subtitle">Simplify your links in seconds</p>
+        <p class="subtitle">Share links elegantly. Simply.</p>
 
         <div class="card">
             <form method="POST" action="/">
                 <div class="form-group">
-                    <input type="url" name="url" placeholder="Enter a long URL" required>
-                    <button type="submit"><i class="fas fa-link"></i> Shorten</button>
+                    <input type="url" name="url" placeholder="Enter your URL to shorten" required>
+                    <button type="submit"><i class="fas fa-link"></i> Shorten URL</button>
                 </div>
             </form>
 
-            <div class="result" style="display: {{.Display}}">
+            <div class="result" id="resultBox" style="display: none;">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div class="success-checkmark">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <span style="font-weight: 500;">URL shortened successfully</span>
+                </div>
                 <p><strong><i class="fas fa-globe"></i> Original URL:</strong> <span
                         class="truncate">{{.OriginalURL}}</span></p>
                 <p><strong><i class="fas fa-link"></i> Your shortened URL:</strong></p>
@@ -331,9 +442,44 @@
     </div>
 
     <script>
+        // Check if we should show the result box
+        document.addEventListener('DOMContentLoaded', function () {
+            if ("{{.Display}}" === "block") {
+                document.getElementById('resultBox').style.display = "block";
+            }
+        });
+
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(function () {
-                alert('URL copied to clipboard!');
+                // Create and show a toast notification
+                const toast = document.createElement('div');
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.padding = '12px 24px';
+                toast.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                toast.style.color = 'white';
+                toast.style.borderRadius = '8px';
+                toast.style.fontSize = '14px';
+                toast.style.fontWeight = '500';
+                toast.style.zIndex = '1000';
+                toast.style.display = 'flex';
+                toast.style.alignItems = 'center';
+                toast.style.gap = '8px';
+                toast.style.backdropFilter = 'blur(5px)';
+                toast.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Copied to clipboard';
+
+                document.body.appendChild(toast);
+
+                // Remove the toast after 2 seconds
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 2000);
             }, function (err) {
                 console.error('Could not copy text: ', err);
             });
